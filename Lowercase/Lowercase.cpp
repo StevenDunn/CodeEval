@@ -1,4 +1,4 @@
-// Reverse Words program written in C++ for CodeEval.com by Steven A. Dunn
+// Lowercase program written in C++ for CodeEval.com by Steven A. Dunn
 
 #include <algorithm>
 #include <fstream>
