@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
   {
     getline(inputFile, line);
     
-    stringstream ss(line);
-    copy(istream_iterator<string>(ss), 
+    istringstream iss(line);
+    copy(istream_iterator<string>(iss), 
       istream_iterator<string>(), 
       back_inserter<vector<string> >(words));  
 

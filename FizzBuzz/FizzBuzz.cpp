@@ -19,7 +19,6 @@ string fizzBuzz(int a, int b, int n);
 int main(int argc, char* argv[])
 {
   ifstream inputFile(argv[1]);
-  ofstream outputFile(argv[2]);
 
   string result, line;
   stringstream ssline;
@@ -28,22 +27,8 @@ int main(int argc, char* argv[])
 
   if(inputFile)
   {
-    getline(inputFile, line); 
-
-    ssline << line;
-    ssline >> A;
-    ssline >> B;
-    ssline >> N;
-     
-    result = fizzBuzz(A, B, N);
- 
-    ssline.clear();
-    cout << result;
-
     while(getline(inputFile, line))
     {
-      cout << endl;
-
       ssline << line;
       ssline >> A;
       ssline >> B;
@@ -52,13 +37,10 @@ int main(int argc, char* argv[])
       result = fizzBuzz(A, B, N);
  
       ssline.clear();
-      cout << result;
+      cout << result << endl;
     }   
   }
-  else perror("UNABLE TO OPEN FILE");
-
   inputFile.close();
-  outputFile.close();
 
   return 0;
 }

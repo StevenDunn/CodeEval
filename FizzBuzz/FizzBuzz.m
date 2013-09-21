@@ -45,9 +45,8 @@ NSString* fizzBuzz(int A, int B, int N)
     else if (i % B == 0)
       result = [result stringByAppendingString:@"B"];
     else
-    {
       result = [result stringByAppendingFormat:@"%d", i];
-    }
+
     result = [result stringByAppendingString:@" "];
   }
   return result;

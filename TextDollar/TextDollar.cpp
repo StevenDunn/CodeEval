@@ -47,7 +47,11 @@ string getDollarName(string numberStr)
 		oss << nextWord;
 	}
 	
-	nextWord = getFinalWord(numberStr.substr(numberStr.size() - 1, 2));
+	if(length == 1)
+		nextWord = getFinalWord(numberStr.substr(0, 1));
+	else
+		nextWord = getFinalWord(numberStr.substr(length - 2, 2));
+		
 	oss << nextWord;
 
 	oss << "Dollars";
@@ -57,8 +61,6 @@ string getDollarName(string numberStr)
 string getWord(char digit, int position)
 {	
 	string word = toWord(digit) + getPositionWord(position);
-	//cout << "digit is: " << digit << endl;
-	//cout << "word is: " << word << endl;
 	return word;
 }
 
@@ -85,16 +87,16 @@ string getPositionWord(int position)
 	string result;
 	switch(position)
 	{
-		case 10:
-		case 9:
-		case 8:
-		case 7:
-		case 6:
-		case 5:
-		case 4:
-		case 3:
+		case 10: result = "Billion"; break;
+		case 9: result = "HundredMillion"; break;
+		case 8: result = "TenMillion"; break;
+		case 7: result = "Million"; break;
+		case 6: result = "HundredThousand"; break;
+		case 5: result = "TenThousand"; break;
+		case 4: result = "Thousand"; break;
+		case 3: result = "Hundred"; break;
 		case 2: 
-		case 1: 
+		case 1:
 		default: result = "";
 	}
 	return result;
@@ -102,12 +104,53 @@ string getPositionWord(int position)
 
 string getFinalWord(string numberStr)
 {
-	ostringstream result("");
-	if(numberStr.size() == 2) {}
+	ostringstream oss("");
 	
+	char firstDigit = numberStr.at(0);
 	char lastDigit = numberStr.at(numberStr.size() - 1);
-	// cout << "last digit: " << lastDigit << endl;
-	result << toWord(lastDigit);
 	
-	return result.str();
+	// cout << numberStr << endl;
+	// 	cout << firstDigit << endl;
+	// 	cout << lastDigit << endl;
+	
+	if(numberStr.size() == 2) 
+	{
+		switch(firstDigit)
+		{
+			case '9': oss << "Ninety"; break;
+			case '8': oss << "Eighty"; break;
+			case '7': oss << "Seventy"; break;
+			case '6': oss << "Sixty"; break;
+			case '5': oss << "Fifty"; break;
+			case '4': oss << "Forty"; break;
+			case '3': oss << "Thirty"; break;
+			case '2': oss << "Twenty"; break;
+			case '1': 
+				{
+					switch(lastDigit)
+					{
+						case '0': oss << "Ten"; break;
+						case '1': oss << "Eleven"; break;
+						case '2': oss << "Twelve"; break;
+						case '3': oss << "Thirteen"; break;
+						case '4': oss << "Fourteen"; break;
+						case '5': oss << "Fifteen"; break;
+						case '6': oss << "Sixteen"; break;
+						case '7': oss << "Seventeen"; break;
+						case '8': oss << "Eighteen"; break;
+						case '9': oss << "Nineteen"; break;
+					}
+				}
+		}
+	}
+	if(numberStr.size() != 2 || firstDigit != 1)
+	{
+		oss << toWord(lastDigit);
+	}
+	
+	//cout << "last digit: " << lastDigit << endl;
+	//cout << numberStr.size() << endl;
+
+	
+	return oss.str();
 }
