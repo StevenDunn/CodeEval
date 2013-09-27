@@ -14,7 +14,7 @@ using std::stringstream;
 
 long textToNumber(string);
 bool isDigit(string, long&);
-bool isMagnitude(string);
+bool isMagnitude(string, long&);
 bool isNegative(string);
 
 bool negative = false;
@@ -52,9 +52,9 @@ long textToNumber(string line)
     if(isDigit(word, convertedValue))
       subResult += convertedValue;
 
-    else if(isMagnitude(word))
+    else if(isMagnitude(word, convertedValue))
     {
-      subResult *= atol(word.c_str());
+      subResult *= convertedValue;
       result += subResult;
       subResult = 0;
     }
@@ -135,6 +135,24 @@ bool isDigit(string word, long& convertedValue)
   return result;
 }
 
-bool isMagnitude(string word) {return false;}
+bool isMagnitude(string word, long& convertedValue) 
+{
+  bool result = true;
+  if (word == "hundred")
+    convertedValue = 100;
+  else if (word == "thousand")
+    convertedValue = 1000;
+  else if (word == "million")
+    convertedValue = 1000000;
+  else
+    result = false;
 
-bool isNegative(string word) {return false;}
+  return result;
+}
+
+bool isNegative(string word) 
+{
+  if (word == "negative")
+    negative = true;
+  return negative;
+}
