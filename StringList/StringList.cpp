@@ -14,10 +14,15 @@ using std::ostringstream;
 using std::sort;
 using std::string;
 
-string printPermutations(int, string);
+void printPermutations(int, string);
 string formatLetters(string);
 void sortLetters(string&);
 void removeDuplicates(string&);
+void printLengthNPermutations(string, string, int);
+
+// cheap hack because I don't feel the need to pass around an ostringstream to everything
+// just for the sake of a coding challenge; I would do otherwise in production code
+ostringstream resultOSS("");
 
 int main(int argc, char* argv[])
 {
@@ -31,7 +36,8 @@ int main(int argc, char* argv[])
 			int N = atoi(line.substr(0, line.find(",")).c_str());
 			string letters = line.substr(line.find(",") + 1);
 			
-			cout << printPermutations(N, letters) << endl;
+			printPermutations(N, letters);
+
 		}
 		inputFile.close();
 	}
@@ -39,10 +45,21 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-string printPermutations(int N, string letters)
+void printPermutations(int N, string letters)
 {
 	letters = formatLetters(letters);
-	return letters;
+	
+	printLengthNPermutations("", letters, N);
+	
+	if(N == 0)
+		cout << "" << endl;
+
+  int pos = resultOSS.tellp();
+  resultOSS.seekp(pos - 1);
+  resultOSS << endl;
+
+  cout << resultOSS.str();
+  resultOSS.str("");
 }
 
 string formatLetters(string letters)
@@ -76,4 +93,19 @@ void removeDuplicates(string& letters)
 	}
 
 	letters = oss.str();
+}
+
+void printLengthNPermutations(string currentString, string letters, int N)
+{
+  if (N == 0)
+  {
+    resultOSS << currentString << ",";
+    return;
+  }
+
+  for(int i = 0; i < letters.size(); ++i)
+  {
+    string updatedString = currentString + letters[i];
+    printLengthNPermutations(updatedString, letters, N - 1); 
+  }
 }
