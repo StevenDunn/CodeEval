@@ -16,6 +16,7 @@ long textToNumber(string);
 bool isDigit(string, long&);
 bool isMagnitude(string, long&);
 bool isNegative(string);
+long combineResults(long, long);
 
 bool negative = false;
 
@@ -28,6 +29,7 @@ int main(int argc, char* argv[])
   {
     while(getline(inputFile, line))
     {
+      //cout << line << endl;
       cout << textToNumber(line) << endl;
     }
     inputFile.close();
@@ -40,12 +42,12 @@ long textToNumber(string line)
 {
   long result = 0;
   long subResult = 0;
+  long priorSubResult = 0;
   long convertedValue = 0;
   negative = false;
 
   stringstream ss(line);
   string word;
-  
 
   while(ss >> word)
   {
@@ -54,8 +56,23 @@ long textToNumber(string line)
 
     else if(isMagnitude(word, convertedValue))
     {
-      subResult *= convertedValue;
+      if(subResult == 0)
+      {
+        subResult = priorSubResult * convertedValue;
+        result -= priorSubResult;
+      }
+      else
+      {
+        subResult *= convertedValue;
+     
+        if(subResult > priorSubResult && priorSubResult != 0)
+        {
+          result -= priorSubResult;
+          subResult = combineResults(subResult, priorSubResult);
+        }
+      }
       result += subResult;
+      priorSubResult = subResult;
       subResult = 0;
     }
 
@@ -155,4 +172,24 @@ bool isNegative(string word)
   if (word == "negative")
     negative = true;
   return negative;
+}
+
+long combineResults(long subResult, long priorSubResult)
+{
+  stringstream ssSub("");
+  ssSub << subResult;
+
+  stringstream ssPrior("");
+  ssPrior << priorSubResult;
+
+  int subLen = ssSub.str().size();
+  int priorLen = ssPrior.str().size();
+
+  while(priorLen <= subLen) 
+  {
+    priorSubResult *= 10;
+    priorLen++;
+  }
+  
+  return priorSubResult + subResult;
 }
