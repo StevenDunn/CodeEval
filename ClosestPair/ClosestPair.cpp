@@ -53,7 +53,11 @@ int main(int argc, char* argv[])
         tuples.push_back(t);
       }
 
-      printf("%.4f\n", findClosestPair(tuples));
+      double result = findClosestPair(tuples);
+      if (result < MAX_DISTANCE)
+        printf("%.4f\n", findClosestPair(tuples));
+      else
+        printf("INFINITY\n");
 
       tuples.clear();
     }
