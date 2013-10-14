@@ -76,10 +76,9 @@ int numMines(int i, int N, vector<int> board)
     mineCount = -1;
   else
   {
-
-    bool xLeft = (i - 1 >= 0);
-    bool xRight = (i + 1 <= board.size() - 1);
-    bool yTop = (i - N >= 0);
+    bool xLeft = (i % N != 0);
+    bool xRight = ((i + 1) % N != 0);
+    bool yTop = (i >= N);
     bool yBottom = (i + N <= board.size() - 1);
 
     if ( xLeft && (board[i-1] == 1) )
@@ -99,5 +98,6 @@ int numMines(int i, int N, vector<int> board)
     if ( xRight && yBottom && (board[i+1+N] == 1) )
       ++mineCount;
   }
+
   return mineCount;
 }
