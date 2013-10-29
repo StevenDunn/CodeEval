@@ -83,6 +83,7 @@ void spiralPrint(int N, int M, vector<int> vals)
 */
 
   int size = N * M;
+  int nStep = M;
   while(N > 1 && M > 1)
   {
     for(int i = 0; i < M; ++i)
@@ -93,7 +94,7 @@ void spiralPrint(int N, int M, vector<int> vals)
     --cur; 
     for(int j = 0; j < N - 1; ++j)
     {
-      cur += M;
+      cur += nStep;
       cout << vals[cur] << " ";
     }
     for(int i = 0; i < M - 1; ++i)
@@ -103,7 +104,7 @@ void spiralPrint(int N, int M, vector<int> vals)
     }
     for(int j = 0; j < N - 2; j++)
     {
-      cur -= M; 
+      cur -= nStep; 
       cout << vals[cur] << " ";
     }
     ++cur;
