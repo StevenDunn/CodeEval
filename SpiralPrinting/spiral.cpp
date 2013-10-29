@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -17,8 +18,8 @@ using std::replace;
 using std::string;
 using std::vector;
 
-vector<int> parseLine(string);
-void spiralPrint(int, int, vector<int>);
+vector<string> parseLine(string);
+void spiralPrint(int, int, vector<string>);
 
 int main(int argc, char* argv[])
 {
@@ -29,9 +30,10 @@ int main(int argc, char* argv[])
   {
     while(getline(inputFile, line))
     {
-      vector<int> nums = parseLine(line);
-      int N = nums[0];
-      int M = nums[1];
+      //cout << "line: " << line << endl;
+      vector<string> nums = parseLine(line);
+      int N = atoi(nums[0].c_str());
+      int M = atoi(nums[1].c_str());
       nums.erase(nums.begin(), nums.begin() + 2);
 
       spiralPrint(N, M, nums);
@@ -41,7 +43,7 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-vector<int> parseLine(string line)
+vector<string> parseLine(string line)
 {
   replace(line.begin(), line.end(), ';', ' ');
 
@@ -52,69 +54,58 @@ vector<int> parseLine(string line)
     istream_iterator<string>(),
     back_inserter<vector<string> >(tokens));
 
-  vector<int> nums;
-  for(int i = 0; i < tokens.size(); ++i)
-    nums.push_back(atoi(tokens[i].c_str()));
-
-  return nums;
+  return tokens;
 }
 
-void spiralPrint(int N, int M, vector<int> vals)
+void spiralPrint(int N, int M, vector<string> vals)
 {
   int cur = 0;
-  //int startOffset = M + 1;
-  //int originalM = M;
-  //int originalN = N;
-
-/*
-  while(N > 1 && M > 1)
-  {
-    int topRight = start + M - 1;
-    for(int i = start; i <= topRight; ++i)
-      cout << vals[i] << " ";
-    for(int j = topRight + originalM; j <= originalM * originalN - start; j = j + originalM)
-     cout << vals[j] << " "; 
-    for(int i = originalM * originalN - start - 2; i > ; --i)
-      cout << vals[i] << " ";
-    start += startOffset;
-    N = N - 2;
-    M = M - 2;
-  } 
-*/
-
   int size = N * M;
   int nStep = M;
-  while(N > 1 && M > 1)
+  int visited = 0;
+  while(true)
   {
     for(int i = 0; i < M; ++i)
     {
       cout << vals[cur] << " ";
       ++cur;
+      ++visited;
     }
+    if(visited == size)
+      break;
     --cur; 
     for(int j = 0; j < N - 1; ++j)
     {
       cur += nStep;
+      ++visited;
       cout << vals[cur] << " ";
     }
+    if(visited == size)
+      break;
     for(int i = 0; i < M - 1; ++i)
     {
       --cur;
+      ++visited;
       cout << vals[cur] << " ";
     }
+    if(visited == size)
+      break;
     for(int j = 0; j < N - 2; j++)
     {
       cur -= nStep; 
+      ++visited;
       cout << vals[cur] << " ";
     }
+    if(visited == size)
+      break;
     ++cur;
 
     N = N - 2;
     M = M - 2;
   }
 
-  if(N == M && size % 2 != 0)
-    cout << vals[cur];
+  //if(N == M && size % 2 != 0)
+  //  cout << vals[cur];
 
   cout << endl;
     
