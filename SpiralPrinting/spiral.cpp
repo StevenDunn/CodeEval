@@ -30,7 +30,6 @@ int main(int argc, char* argv[])
   {
     while(getline(inputFile, line))
     {
-      //cout << "line: " << line << endl;
       vector<string> nums = parseLine(line);
       int N = atoi(nums[0].c_str());
       int M = atoi(nums[1].c_str());
@@ -104,9 +103,5 @@ void spiralPrint(int N, int M, vector<string> vals)
     M = M - 2;
   }
 
-  //if(N == M && size % 2 != 0)
-  //  cout << vals[cur];
-
   cout << endl;
-    
 }

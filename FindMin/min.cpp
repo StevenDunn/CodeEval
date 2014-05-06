@@ -16,7 +16,6 @@ using std::vector;
 
 vector<int> tokenize(string);
 vector<int> findKnownValues(int, int, int, int, int);
-int nextMin(vector<int>);
 
 int main(int argc, char* argv[])
 {
@@ -36,21 +35,9 @@ int main(int argc, char* argv[])
       int R = params[5];
 
       vector<int> knownValues = findKnownValues(K, A, B, C, R);
-      sort(knownValues.begin(), knownValues.end());
-
-
-      for(int i = K; i <= N; ++i)
-      {
-        int nextVal = nextMin(knownValues);
-        knownValues.insert(knownValues.begin() + nextVal, nextVal);
-
-        if(i == N)
-          cout << nextVal << endl;
-      }
     }
     inputFile.close();
   }
-
   return 0;
 }
 
@@ -82,16 +69,4 @@ vector<int> findKnownValues(int K, int A, int B, int C, int R)
     knownValues.push_back(m);
   }
   return knownValues;
-}
-
-int nextMin(vector<int> values)
-{
-  int min = 0;
-  for(int i = 0; i < values.size(); ++i)
-  {
-    if(values[i] != i)
-     min = i; 
-  }
-
-  return min;
 }

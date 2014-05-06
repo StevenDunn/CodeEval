@@ -17,6 +17,7 @@ using std::ostringstream;
 using std::string;
 using std::vector;
 
+void printLine(string);
 double evaluate(string);
 string parseNextToken(string&);
 bool isOperator(char);
@@ -38,18 +39,22 @@ int main(int argc, char* argv[])
 	if(inputFile)
 	{
 		while(getline(inputFile, line))
-		{
-			//cout << line << endl;
-			ostringstream s;
-			s.setf(ios::fixed);
-			s.precision(10);
-			s << evaluate(line);
-			cout << parse(s.str()) << endl;
-			
-		}
+    {
+      //cout << line << endl;
+      printLine(line);
+    }
 		inputFile.close();
 	}
 	return 0;
+}
+
+void printLine(string line)
+{
+  ostringstream s;
+	s.setf(ios::fixed);
+	s.precision(10);
+	s << evaluate(line);
+	cout << parse(s.str()) << endl;
 }
 
 double evaluate(string line)
@@ -64,6 +69,7 @@ double evaluate(string line)
 	
 	while(line != "")
 	{
+    cout << line << endl;
 		token = parseNextToken(line);	
 
 		if(isOperator(token[0])) 
@@ -76,12 +82,15 @@ double evaluate(string line)
 		else if(isLeftParen(token[0])) 
 		{ 
 			getSubExpr(line);
+      continue;
 		}
 		else { operands.push_back(token); }
+    line = line.substr(token.size());
+    cout << line << endl;
 	}
 	
 	result = updateResult(operands, operators);
-
+cout << "result: " << result << endl;
 	return result;
 }
 
@@ -95,7 +104,7 @@ string parseNextToken(string& line)
 		++idx;
 	
 	string token = line.substr(0, idx);
-	line = line.substr(idx);
+	//line = line.substr(idx);
 	
 	return token;
 }
@@ -123,6 +132,7 @@ bool isRightParen(char c)
 
 string getSubExpr(string& line)
 {
+  cout << "subexpr line: " << line << endl;
 	int leftParen = 0;
 	int rightParen = 0;
 
@@ -133,11 +143,12 @@ string getSubExpr(string& line)
 		if (isRightParen(line[i]))
 		{
 			rightParen = i;
-			string subexpr = line.substr(leftParen, rightParen - leftParen);
-		
+			string subexpr = line.substr(leftParen + 1, rightParen - leftParen - 1);
+	    cout << "subexpr is: " << subexpr << endl;	
 			ostringstream s;
 			s << evaluate(subexpr);
 			line.replace(leftParen, rightParen - leftParen + 1, s.str());
+      cout << "subbed line: " << line << endl;
 			
 			continue;			
 		}	
@@ -229,6 +240,7 @@ double apply(char firstOperator, vector<string> operands, int idx)
 {
 	double x = atof(operands[idx].c_str());
 	double y = atof(operands[idx + 1].c_str());
+  cout << "x & y: " << x << " " << y << endl;
 	
 	double result = 0.0;
 	
@@ -250,7 +262,7 @@ double apply(char firstOperator, vector<string> operands, int idx)
 			result = x - y;
 			break;
 	}
-
+  cout << "result from x & y: " << result << endl;
 	return result;
 }
 
