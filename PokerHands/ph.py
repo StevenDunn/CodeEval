@@ -108,40 +108,54 @@ def highCard(hand):
   vals = getVals(hand)
   return max(vals)
 
-def rank(hand):
-  numericHand = makeNumeric(hand)
-  if isRoyalFlush(numericHand): return (23, 23)
-  elif isStraightFlush(numericHand): return (22, highCard(numericHand))
-  elif isFourOfAKind(numericHand): return (21, highCard(numericHand))
-  elif isFullHouse(numericHand): return (20, highCard(numericHand))
-  elif isFlush(numericHand): return (19, highCard(numericHand))
-  elif isStraight(numericHand): return (18, highCard(numericHand))
-  elif isThreeOfAKind(numericHand): return (17, highCard(numericHand))
-  elif isTwoPairs(numericHand): return (16, highCard(numericHand))
-  elif isOnePair(numericHand): return (15, highCard(numericHand))
-  else: return (highCard(numericHand), highCard(numericHand))
+def rank(numericHand):
+  if isRoyalFlush(numericHand): return 23
+  elif isStraightFlush(numericHand): return 22
+  elif isFourOfAKind(numericHand): return 21
+  elif isFullHouse(numericHand): return 20
+  elif isFlush(numericHand): return 19
+  elif isStraight(numericHand): return 18
+  elif isThreeOfAKind(numericHand): return 17
+  elif isTwoPairs(numericHand): return 16
+  elif isOnePair(numericHand): return 15
+  else: return highCard(numericHand)
+
+def compare(left_rank, left_hand, right_rank, right_hand):
+  if left_rank > right_rank:
+    return "left"
+  elif right_rank > left_rank:
+    return "right"
+  else:
+    while left_hand or right_hand:
+      left_high = highCard(left_hand)
+      right_high = highCard(right_hand)
+
+      if left_high > right_high:
+        return "left"
+      if right_high > left_high:
+        return "right"
+      left_hand[:] = [x for x in left_hand if x != max(left_hand)]
+      right_hand[:] = [x for x in right_hand if x != max(right_hand)]
+    return "none"
+
+#===========
+
 
 import sys
 
 for line in open(sys.argv[1], 'r'):
+  
   line = line.rstrip('\n').split(' ')
   left = line[0:5]
   right = line[5:]
+  
+  left_hand = makeNumeric(left)
+  right_hand = makeNumeric(right)
 
-  left_rank = rank(left)
-  right_rank = rank(right)
+  left_rank = rank(left_hand)
+  right_rank = rank(right_hand)
 
   #print left, right
   #print left_rank, right_rank
 
-  if left_rank[0] > right_rank[0]:
-    print "left"
-  elif right_rank[0] > left_rank[0]:
-    print "right"
-  else:
-    if left_rank[1] > right_rank[1]:
-      print "left"
-    elif right_rank[1] > left_rank[1]:
-      print "right"
-    else: print "none"
-
+  print compare(left_rank, left_hand, right_rank, right_hand)
