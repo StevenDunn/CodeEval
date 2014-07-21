@@ -14,11 +14,11 @@ for line in open(sys.argv[1], 'r'):
     labels = i.split("label")
 
     for j in labels:
-      start = j.find("Label") + 6;
+      start = j.find("Label") + 6
       j = j[start:]
       end = j.find("\"")
       j = j[:end]
-      try: 
+      try:
         j = int(j)
         sum += j
       except ValueError:
