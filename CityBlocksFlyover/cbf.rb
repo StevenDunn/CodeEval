@@ -5,26 +5,21 @@ File.open(ARGV[0], 'r') do |file|
         x, y = line.split
 
         x = x[1..-2].split(",").map{|a| a.to_i}
-        x.delete(0)
+        xs = x.zip(x[1..-1])[0..-2]
 
         y = y[1..-2].split(",").map{|a| a.to_i}
-        y.delete(0)
+        ys = y.zip(y[1..-1])[0..-2]
 
         m = y[-1]/x[-1].to_f
 
-        x_vals = Hash.new
-        x.each do |val|
-            x_vals[val] = m*val
-        end
-
-        y_vals = Hash.new
-        y.each do |val|
-            if !x_vals.has_value?(val)
-                y_vals[val] = val/m
+        total = 0
+        xs.each do |x|
+            ys.each do |y|
+                if ( !(m * x[0] >= y[1] || m * x[1] <= y[0]) )
+                    total += 1
+                end
             end
         end
-
-        total_squares = x_vals.length + y_vals.length
-        puts total_squares
+        puts total
     end
 end
