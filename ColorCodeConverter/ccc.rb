@@ -26,8 +26,8 @@ def hsl2rgb(line)
     s = vars[1]/100.0
     l = vars[2]/100.0
 
-    if (1 < 0.5)
-        q = 1 * (1 + s)
+    if (l < 0.5)
+        q = l * (1 + s)
     else
         q = l + s - l * s
     end
