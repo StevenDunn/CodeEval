@@ -1,49 +1,57 @@
-def simplify(sequence)
-    current_char = sequence[0]
-    simplified_string = current_char
-    sequence.split("").each do |c|
-        if c != current_char
-            current_char = c
-            simplified_string << current_char
-        end
+
+ZERO_REGEX = "A+"
+ONE_REGEX = "(A+|B+)"
+
+File.open(ARGV[0], 'r').each_line do |line|
+    binary, text = line.chomp.split
+    text_regex = []
+    binary.split("").each do |digit|
+        digit == "0" ? text_regex << ZERO_REGEX : text_regex << ONE_REGEX
     end
-    simplified_string
+    regex = Regexp.new(text_regex.join)
+    result = text =~ regex ? "Yes" : "No"
+    puts result
 end
 
-def convert(string)
-    translations = []
-    a = ["1", "0", "10", "01"]
 
-    string[0] == 'A' ? translations.concat(a) : translations = ["1"]
+=begin
+File.open(ARGV[0], 'r').each_line do |line|
+    binary, text = line.chomp.split(" ")
 
-    string[1..-1].split("").each do |c|
-        if c == 'A'
-            translations.map!{ |t|
-                updated_vals = []
-                a.each do |x|
-                    updated_vals << t + x
-                end
-                t = updated_vals
-            }
-            translations.flatten!
+    text = text.squeeze('A-B')
+
+    perms = []
+
+    binary.split("").each do |digit|
+        if digit == "1"
+            if perms.empty?
+                perms << "A"
+                perms << "B"
+            else
+                perms_a = perms.map{ |x| x += "A" }
+                perms_b = perms.map{ |x| x += "B" }
+                perms = perms_a.concat(perms_b)
+                perms.map! { |x| x.squeeze('A-B') }
+            end
         else
-            translations.map!{ |x| x + "1" }
+            if perms.empty?
+                perms << "A"
+            end
+            perms.map!{ |x| x += "A" }
+            perms.map! { |x| x.squeeze('A-B') }
+        end
+
+        perms.each do |perm|
+            if perm != text[0...perm.length]
+                perms.delete(perm)
+            end
         end
     end
-    translations.flatten
-end
 
-def validTranslation?(translations, binary)
-    translations.include?(binary) ? "Yes" : "No"
-end
-
-File.open(ARGV[0], 'r') do |file|
-    while line = file.gets
-        binary, sequence = line.split
-        simplified_string = simplify(sequence)
-        simplified_binary = simplify(binary)
-        translations = convert(simplified_string)
-
-        puts validTranslation?(translations, simplified_binary)
+    if perms.include? text
+        puts "Yes"
+    else
+        puts "No"
     end
 end
+=end
