@@ -2,43 +2,31 @@
 
 $seq = [0, 1]
 
-def update(n)
-  if n == 0
-    1
-  elsif n == 1
-    2
-  elsif n == 2
-    0
+def calculate_x(n)
+  x = 2
+  while x <= n
+    x *= 2
   end
-end
-
-def calculate_seq(x)
-  puts x
-  while $seq.length < x
-    updated_seq = []
-    $seq.each do |entry|
-      updated_seq << update(entry)
-    end 
-    $seq << updated_seq
-  end
+  x/2
 end
 
 File.open(ARGV[0]).each_line do |line|
+
   n = line.to_i
-  x = 2 ** 0
-  while x < n
-    x *= 2
+  #puts "n: #{n}"
+
+  x = calculate_x(n)
+  #puts "initial x: #{x}"
+  offset = 0
+  while n > 0
+    n -= x
+    #puts "updated n: #{n}"
+    offset += 1
+    x = calculate_x(n)
+    #puts "updated x: #{x}"
   end
-  x /= 2
-  diff = n - x
-  
-  if $seq.length < x
-    calculate_seq x
-  end 
-  
-  if n == 0
-    puts 0
-  else
-    puts update($seq[diff])
-  end
+  #puts n
+  #puts offset % 3
+  #puts "final: #{offset % 3}"
+  puts offset % 3
 end
