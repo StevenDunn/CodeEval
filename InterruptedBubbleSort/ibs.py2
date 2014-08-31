@@ -1,0 +1,25 @@
+# interrupted bubble sort py soln for codeeval by steven a dunn
+
+def bubble_sort(vals, steps):
+    n = 0
+    while n < steps:
+        for index, val in enumerate(vals):
+            if index >= len(vals) - 1 - n:
+                continue
+            next_val = vals[index+1]
+            if next_val < val:
+                vals[index+1] = val
+                vals[index] = next_val
+        n += 1
+    return vals
+
+import sys
+
+for line in open(sys.argv[1], 'r'):
+    line = line.rstrip().split(" | ")
+    vals = map(int, line[0].split())
+    steps = int(line[1])
+
+    vals = bubble_sort(vals, steps)
+
+    print ' '.join([str(x) for x in vals])
