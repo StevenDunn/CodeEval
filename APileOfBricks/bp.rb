@@ -1,59 +1,81 @@
-# a pile of bricks soln in rb for codeeval by steven a dunn
+# a pile of bricks rb soln by steven dunn for codeeval
 
-class Brick
-    attr_accessor :index, :x, :y, :z
+def parse_hole_coordinates(hole_vertices)
+    hole_vertices.gsub!(/[\[\],]/, ' ')
+    hole_vertices = hole_vertices.split(" ").to_a
+    hole_vertices.map! { |e| e.to_i }
 
-    def initialize(params)
-        @index = params[0]
-        @x = params[1]
-        @y = params[2]
-        @z = params[3]
-    end
+    x = (hole_vertices[0] - hole_vertices[2]).abs
+    y = (hole_vertices[1] - hole_vertices[3]).abs
 
-    def fits(hole)
-        false
-    end
+    [x, y]
 end
 
-def parse_brick_data(line)
-    line.gsub!(/[\(\)]/, "")
-    line = line.split
+def parse_brick_vertices(brick_vertices)
+    bricks = {}
+    brick_list = brick_vertices.split(";")
+    brick_list.each do |brick|
+        brick.gsub!(/[\(\)]/, '')
+        brick = brick.split(" ")
+        brick_idx = brick[0].to_i
+        brick_coord_1 = brick[1].gsub!(/[\[\]]/, '').split(",").map { |e| e.to_i }
+        brick_coord_2 = brick[2].gsub!(/[\[\]]/, '').split(",").map { |e| e.to_i }
 
-    index = line[0]
-    coord1 = line[1].gsub(/[\]\[]/, "").split(",").map(&:to_i)
-    coord2 = line[2].gsub(/[\]\[]/, "").split(",").map(&:to_i)
-
-    x = (coord1[0] - coord2[0]).abs
-    y = (coord1[1] - coord2[1]).abs
-    z = (coord1[2] - coord2[2]).abs
-
-    [index, x, y, z]
+        bricks[brick_idx] = [(brick_coord_1[0] - brick_coord_2[0]).abs, (brick_coord_1[1] - brick_coord_2[1]).abs, (brick_coord_1[2] - brick_coord_2[2]).abs]
+    end
+    bricks
 end
+
+def brick_fits(x, y, brick_coords)
+    brick_x = brick_coords[0]
+    brick_y = brick_coords[1]
+    brick_z = brick_coords[2]
+
+    #puts "#{x} #{y} #{brick_coords}"
+
+    if brick_x < 0 || brick_y < 0 || brick_z < 0
+        return false
+    end
+
+
+
+    # test the 3 possible brick sides:
+    # xy
+    if brick_x <= x && brick_y <= y
+        return true
+    elsif brick_y <= x && brick_x <= y
+        return true
+    # xz
+    elsif brick_x <= x && brick_z <= y
+        return true
+    elsif brick_z <= x && brick_x <= y
+        return true
+    # yz
+    elsif brick_y <= x && brick_z <= y
+        return true
+    elsif brick_z <= x && brick_y <= y
+        return true
+    end
+    false
+end
+
 
 File.open(ARGV[0], 'r').each_line do |line|
-    line = line.split("|")
+    hole_vertices, brick_vertices = line.chomp.split("|")
 
-    hole_coordinates = line[0]
-    brick_data = line[1]
+    x, y = parse_hole_coordinates(hole_vertices)
+    bricks = parse_brick_vertices(brick_vertices)
 
-    hole_coordinates = hole_coordinates.gsub(/[\[\]]/, "").split
-    hole_coordinates.map!{|sym| sym.split(",")}
-    hole_coordinates = hole_coordinates.map{|sym| sym.map(&:to_i)}
-
-    brick_data = brick_data.chomp.split(";")
-
-    bricks = Array.new
-    brick_data.each do |brick|
-        bricks << Brick.new(parse_brick_data(brick))
-    end
-
-    results = ["test data"]
-    bricks.each do |brick|
-        if (brick.fits(hole_coordinates))
-            results << brick.index
+    result = []
+    bricks.each do |brick_idx, brick_coords|
+        if brick_fits(x, y, brick_coords)
+            result << brick_idx
         end
     end
 
-    puts results.join(",")
-    puts
+    if result.empty?
+        puts "-"
+    else
+        puts result.sort!.join(",")
+    end
 end
