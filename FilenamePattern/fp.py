@@ -12,6 +12,7 @@ for line in f:
     pattern = pattern.replace(".", "\.")
     pattern = pattern.replace("*", ".*")
     pattern = pattern.replace("?", ".")
+    pattern = "^" + pattern
     pattern += "$"
 
     pattern = re.compile(pattern)
