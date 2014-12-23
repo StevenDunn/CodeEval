@@ -8,12 +8,14 @@ for line in f:
     line = line.split()
     pattern = line[0]
     terms = line[1:-1]
+    print terms
 
     pattern = pattern.replace(".", "\.")
     pattern = pattern.replace("*", ".*")
     pattern = pattern.replace("?", ".")
     pattern = "^" + pattern
     pattern += "$"
+    print pattern
 
     pattern = re.compile(pattern)
 
