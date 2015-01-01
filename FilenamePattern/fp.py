@@ -7,15 +7,13 @@ f = open(sys.argv[1], 'r')
 for line in f:
     line = line.split()
     pattern = line[0]
-    terms = line[1:-1]
-    print terms
+    terms = line[1:]
 
     pattern = pattern.replace(".", "\.")
     pattern = pattern.replace("*", ".*")
     pattern = pattern.replace("?", ".")
     pattern = "^" + pattern
     pattern += "$"
-    print pattern
 
     pattern = re.compile(pattern)
 
@@ -28,4 +26,5 @@ for line in f:
         print "-"
     else:
         print " ".join(results)
+
 f.close()
