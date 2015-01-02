@@ -2,33 +2,42 @@
 
 import sys
 
-def add_user(user, interests = None):
-    #if user not in users:
-    users[user] = interests
-
 f = open(sys.argv[1], 'r')
 
-users = {}
+interests = {}
+friends = {}
 
-# initial pass to populate data structure
 for line in f:
-    print line,
     line = line.split(":")
     user = line[0]
-    print user,
-    interests = line[2].strip().split(",")
-    print interests
-    add_user(user, interests)
 
-    #friends = line[1].split(",")
-    #for friend in friends:
-    #    add_user(friend)
+    user_friends = line[1].split(",")
+    friends[user] = user_friends
+
+    user_interests = line[2].strip().split(",")
+    interests[user] = user_interests
 
 f.seek(0)
 for line in f:
-    print line
+    potential_interests = []
+    user = line.split(":")[0]
 
+    friend_interests = {}
+    for friend in friends[user]:
+        for specific_interest in interests[friend]:
+            if specific_interest == '':
+                continue
+            if specific_interest in friend_interests:
+                friend_interests[specific_interest] += 1
+            else:
+                friend_interests[specific_interest] = 1
 
-print users
+    for specific_interest, count in friend_interests.items():
+        if specific_interest not in interests[user]:
+            if float(count)/len(friends[user]) * 100 >= 50:
+                potential_interests.append(specific_interest)
 
+    if len(potential_interests) > 0:
+        potential_interests = sorted(potential_interests)
+        print user + ":" + ",".join(potential_interests)
 f.close()
