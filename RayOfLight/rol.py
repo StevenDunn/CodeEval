@@ -3,13 +3,20 @@
 import sys
 
 room = []
+splitters = []
 
 def deserialize(line):
+    global splitters
+
+    splitters = []
     line = line.rstrip()
     chunks, chunk_size = len(line), len(line)/10
     room = [line[i:i+chunk_size] for i in range(0, chunks, chunk_size)]
     for index, row in enumerate(room):
         room[index] = list(row)
+        splitters_this_row = [i for i, x in enumerate(room[index]) if x == "*"]
+        for i in splitters_this_row:
+            splitters.append([index, i, False])
     return room
 
 def find_start():
@@ -24,26 +31,26 @@ def find_start():
             return [i, 9]
 
 def is_forward_slash(x, y):
-    room[x][y] == "/"
+    return room[x][y] == "/"
 
 def find_direction(x, y):
     if x == 0:
-        if is_forward_slash:
+        if is_forward_slash(x, y):
             direction = 225
         else:
             direction = 315
     elif x == 9:
-        if is_forward_slash:
+        if is_forward_slash(x, y):
             direction = 45
         else:
             direction = 135
     elif y == 0:
-        if is_forward_slash:
+        if is_forward_slash(x, y):
             direction = 45
         else:
             direction = 315
     else:
-        if is_forward_slash:
+        if is_forward_slash(x, y):
             direction = 225
         else:
             direction = 135
@@ -68,32 +75,24 @@ def calculate_reflection(x, y, direction):
     if does_reflect(x, y):
         if direction == 45:
             if x == 0:
-                mark_ray(x+1, y, 315)
-                update_ray(x+1, y, 315)
+                calculate_update(x+1, y, 315)
             else:
-                mark_ray(x, y-1, 135)
-                update_ray(x, y-1, 135)
+                calculate_update(x, y-1, 135)
         elif direction == 225:
             if x == 9:
-                mark_ray(x-1, y, 135)
-                update_ray(x-1, y, 135)
+                calculate_update(x-1, y, 135)
             else:
-                mark_ray(x, y+1, 315)
-                update_ray(x, y+1, 315)
+                calculate_update(x, y+1, 315)
         elif direction == 135:
             if x == 0:
-                mark_ray(x+1, y, 225)
-                update_ray(x+1, y, 225)
+                calculate_update(x+1, y, 225)
             else:
-                mark_ray(x, y+1, 45)
-                update_ray(x, y+1, 45)
+                calculate_update(x, y+1, 45)
         elif direction == 315:
             if x == 9:
-                mark_ray(x-1, y, 45)
-                update_ray(x-1, y, 45)
+                calculate_update(x-1, y, 45)
             else:
-                mark_ray(x+1, y, 225)
-                update_ray(x+1, y, 225)
+                calculate_update(x, y-1, 225)
 
 def is_column(x, y):
     if room[x][y] == "o":
@@ -107,25 +106,41 @@ def is_splitter(x, y):
     return False
 
 def split(x, y):
-    calculate_update(x+1, y-1, 225)
-    calculate_update(x+1, y+1, 315)
-    calculate_update(x-1, y-1, 135)
-    calculate_update(x-1, y+1, 45)
+    for splitter in splitters:
+        if splitter[0] == x and splitter[1] == y and splitter[2] == False:
+            splitter[2] = True
+            calculate_update(x+1, y-1, 225)
+            calculate_update(x+1, y+1, 315)
+            calculate_update(x-1, y-1, 135)
+            calculate_update(x-1, y+1, 45)
 
 def mark_ray(x, y, direction):
+    if room[x][y] == "X":
+        return
     if direction == 45 or direction == 225:
         if room[x][y] == "\\":
             room[x][y] = "X"
-        else:
+        elif room[x][y] != "/":
             room[x][y] = "/"
     else:
         if room[x][y] == "/":
             room[x][y] = "X"
-        else:
+        elif room[x][y] != "\\":
             room[x][y] = "\\"
+    #print "mark ray at: ", x, y, direction, "as: ", room[x][y]
+
+def visited(x, y, direction):
+    if direction == 45 or direction == 225:
+        if room[x][y] == "/":
+            return True
+    else:
+        if room[x][y] == "\\":
+            return True
+    return False
 
 def calculate_update(x, y, direction):
-    if in_range(x) and in_range(y):
+    #print x, y, direction
+    if in_range(x) and in_range(y) and not visited(x, y, direction):
         if is_wall(x, y):
             calculate_reflection(x, y, direction)
         else:
@@ -137,8 +152,6 @@ def calculate_update(x, y, direction):
                     update_ray(x, y, direction)
 
 def update_ray(x,y, direction):
-    #print x, y, direction
-
     if direction == 45:
         calculate_update(x-1, y+1, direction)
     elif direction == 225:
@@ -159,10 +172,10 @@ def serialize():
 f = open(sys.argv[1], 'r')
 
 for line in f:
+    #print line
     room = deserialize(line)
     x,y = find_start()
     initial_direction = find_direction(x,y)
     update_ray(x, y, initial_direction)
-    #print room
     print serialize()
 f.close()
