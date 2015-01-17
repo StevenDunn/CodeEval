@@ -3,8 +3,8 @@
 def sift(x):
   global nums
   global words
-  
-  try: 
+
+  try:
     int(x)
     nums.append(x)
   except ValueError:
