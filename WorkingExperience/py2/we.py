@@ -19,18 +19,6 @@ months = {
     "Dec" : 11
 }
 
-def get_ranges(dates):
-    ranges = set()
-    for date in dates:
-        print date
-        print date[0]
-        print date[1]
-        #start = parse(date[0])
-        #finish = parse(date[1])
-        #date = (start, finish)
-        #print finish - start
-    return ranges
-
 def parse_dates(line):
     dates = line.strip().split(';')
     dates = [x.strip().split('-') for x in dates]
