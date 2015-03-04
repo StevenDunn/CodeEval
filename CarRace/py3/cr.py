@@ -1,4 +1,4 @@
-#car race soln in py for code eval by steven a dunn
+#car race soln in py3 for code eval by steven a dunn
 
 import sys
 
@@ -9,7 +9,7 @@ def timed_lap(track, top_speed, time_to_accelerate, time_to_brake):
     acceleration = top_speed / time_to_accelerate
     deceleration = top_speed / time_to_brake
 
-    for i in xrange(0, len(track), 2):
+    for i in range(0, len(track), 2):
         segment_length = float(track[i])
         segment_turn = int(track[i+1])
 
@@ -38,4 +38,4 @@ for line in f:
 f.close()
 
 for key in sorted(results, key=results.get):
-    print "%d %.2f" % (key, results[key])
+    print ("%d %.2f" % (key, results[key]))
