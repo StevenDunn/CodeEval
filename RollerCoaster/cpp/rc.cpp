@@ -33,9 +33,7 @@ int main (int argc, char* argv[])
                     letter_case = !letter_case;
                 }
                 else
-                {
                     result += c;
-                }
             }
             cout << result << endl;
         }
