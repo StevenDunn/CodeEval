@@ -3,17 +3,18 @@
 import sys
 
 for line in open(sys.argv[1], 'r'):
-  expr = line.rstrip('\n').split(' ')
-  expr[0] = list(expr[0])
+  line = line.rstrip('\n').split(' ')
+  nums = line[0]
+  expr = line[1]
 
-  for i in range(0, len(expr[1])):
-    if expr[1][i] == '+':
-      expr[0].insert(i, '+')
-    elif expr[1][i] == '-':
-      expr[0].insert(i, '-')
-    else:
-      continue
+  operator_index = expr.find('+')
+  if operator_index == -1:
+    operator_index = expr.find('-')
 
-  result = ''.join(expr[0])
-  print (result)
-  print (eval(result))
+  num1 = int(nums[0:operator_index])
+  num2 = int(nums[operator_index:])
+
+  if expr[operator_index] == '+':
+    print (num1 + num2)
+  else:
+    print (num1 - num2)

@@ -13,7 +13,7 @@ for line in open(sys.argv[1], 'r'):
       expr[0].insert(i, '-')
     else:
       continue
-  
+
   result = ''.join(expr[0])
 
   print eval(result)
