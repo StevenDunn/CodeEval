@@ -2,9 +2,7 @@
 
 import sys
 from numpy.fft import fft
-
-def mean(a):
-    return sum(a) / len(a)
+import matplotlib.pyplot as plt
 
 f = open(sys.argv[1], 'r')
 
@@ -13,13 +11,12 @@ for line in f:
     samples = [int(x) for x in samples]
 
     # get the Fast Fourier Transform
-    sampleMean = mean(samples)
+    sampleMean = sum(samples)/len(samples)
     detrendSamples = [entry - sampleMean for entry in samples]
     transformedSignal = abs(fft(detrendSamples))
 
     # get the frequency
     maxVal = max(transformedSignal)
-    print maxVal
     maxIdx = [i for i, j in enumerate(transformedSignal) if j == maxVal]
     print maxIdx
 
