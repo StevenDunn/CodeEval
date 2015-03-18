@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
     if (input_file)
     {
-         bool is_slang = false;
+        bool is_slang = false;
         int slang_index = 0;
         vector<string> slang = {", yeah!", ", this is crazy, I tell ya.", ", can U believe this?", ", eh?", ", aw yea.", ", yo.", "? No way!", ". Awesome!"};
         while (getline(input_file, line))
