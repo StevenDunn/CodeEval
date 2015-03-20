@@ -4,10 +4,13 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
+using std::cout;
+using std::endl;
 using std::find;
 using std::ifstream;
 using std::istringstream;
@@ -15,10 +18,11 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-vector<string> alphabet = {" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+vector<char> alphabet = {' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
 vector<string> parse(string&);
 string decrypt(string&, string&);
+int find(vector<char>, char);
 
 int main(int argc, char* argv[])
 {
@@ -30,7 +34,7 @@ int main(int argc, char* argv[])
         while (getline(input_file, line))
         {
             vector<string> cipher_and_text = parse(line);
-            printf("%s\n", decrypt(cipher_and_text[0], cipher_and_text[1]).c_str());
+            printf("%s\n", decrypt(cipher_and_text[1], cipher_and_text[0]).c_str());
         }
         input_file.close();
     }
@@ -49,22 +53,28 @@ vector<string> parse(string& input)
 
 string decrypt(string& ciphertext, string& cipher)
 {
-    printf("%s | %s \n", ciphertext.c_str(), cipher.c_str());
     while (cipher.size() < ciphertext.size())
         cipher = cipher + cipher;
     cipher = cipher.substr(0, ciphertext.size());
 
     string text("");
+
     for (int i = 0; i < ciphertext.size(); ++i)
     {
-        string search_element;
-        stringstream ss;
-        ss << ciphertext[i];
-        ss >> search_element;
-        int location = find(alphabet.begin(), alphabet.end(), search_element) - alphabet.begin();
+        char* str;
+        int location = find(alphabet, ciphertext[i]);
         int updated_location = location - (cipher[i] - '0');
+        if (updated_location < 0)
+            updated_location = alphabet.size() + updated_location;
         text += alphabet[updated_location];
-        printf("%s", text.c_str());
     }
     return text;
+}
+
+int find(vector<char> alphabet, char element)
+{
+    for (int i = 0; i < alphabet.size(); ++i)
+        if (element == alphabet[i])
+            return i;
+    return -1;
 }
