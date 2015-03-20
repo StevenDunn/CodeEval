@@ -20,7 +20,7 @@ int main (int argc, char* const argv[])
     FILE *fp = fopen(argv[1], "r");
     if (fp != NULL)
     {
-        char line[65536];
+        char line[16384];
         while (fgets(line, sizeof(line), fp))
         {
             Array nums;
