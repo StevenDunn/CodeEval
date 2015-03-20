@@ -61,7 +61,6 @@ string decrypt(string& ciphertext, string& cipher)
 
     for (int i = 0; i < ciphertext.size(); ++i)
     {
-        char* str;
         int location = find(alphabet, ciphertext[i]);
         int updated_location = location - (cipher[i] - '0');
         if (updated_location < 0)
