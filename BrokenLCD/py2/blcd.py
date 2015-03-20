@@ -23,10 +23,9 @@ for line in f:
     for i in range(0, len(displays) - len(converted_numbers) + 1):
         match = 0
         for j in range(0, len(converted_numbers)):
-            print "i: ", i, "j: ", j
-            print displays[i+j];
             print int(displays[i+j], 2)
             print converted_numbers[j]
+            print len(converted_numbers)
             print int(displays[i+j], 2) & converted_numbers[j]
             if int(displays[i+j], 2) & converted_numbers[j] != converted_numbers[j]:
                 break
