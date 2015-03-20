@@ -19,9 +19,15 @@ for line in f:
             converted_numbers[i-1] += 0b00000001
 
     did_print = False
+    print "displays size: ", len(displays), "converted_numbers size: ", len(converted_numbers)
     for i in range(0, len(displays) - len(converted_numbers) + 1):
         match = 0
         for j in range(0, len(converted_numbers)):
+            print "i: ", i, "j: ", j
+            print displays[i+j];
+            print int(displays[i+j], 2)
+            print converted_numbers[j]
+            print int(displays[i+j], 2) & converted_numbers[j]
             if int(displays[i+j], 2) & converted_numbers[j] != converted_numbers[j]:
                 break
             else:
