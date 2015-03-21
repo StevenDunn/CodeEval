@@ -23,7 +23,7 @@ def createTree():
   node.left.right.left.left = None
   node.left.right.left.right = None
   node.left.right.right = Node()
-  node.left.right.right.val = 29
+  node.left.right.right.val = 29;
   node.left.right.right.left = None
   node.left.right.right.right = None
   node.right = Node()
@@ -35,13 +35,21 @@ def createTree():
 
 def findLCA(node, left, right):
   val = node.val
-  if left < val and right > val: return val
-  elif left > val: return findLCA(node.right, left, right)
-  else: return findLCA(node.left, left, right)
+  if val == left or val == right:
+    return val
+  if left < val and right > val:
+    return val
+  elif left > val:
+    return findLCA(node.right, left, right)
+  else:
+    return findLCA(node.left, left, right)
 
 import sys
 
 for line in open(sys.argv[1], 'r'):
   line = map(int, line.rstrip('\n').split(' '))
   node = createTree()
-  print findLCA(node, line[0], line[1])
+  left, right = line
+  if left > right:
+    left, right = right, left
+  print findLCA(node, left, right)

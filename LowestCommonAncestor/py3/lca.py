@@ -1,4 +1,4 @@
-# Lowest Common Ancestor solution in Python 2 for CodeEval.com by Steven A. Dunn
+# Lowest Common Ancestor solution in Python 3 for CodeEval.com by Steven A. Dunn
 
 class Node:
   def __init__(self):
