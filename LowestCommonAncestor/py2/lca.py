@@ -23,6 +23,7 @@ def createTree():
   node.left.right.left.left = None
   node.left.right.left.right = None
   node.left.right.right = Node()
+  node.left.right.right.val = 29
   node.left.right.right.left = None
   node.left.right.right.right = None
   node.right = Node()
