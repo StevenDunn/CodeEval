@@ -1,9 +1,9 @@
-# Jolly Jumpers solution in Python 2 for CodeEval.com by Steven A. Dunn
+# Jolly Jumpers solution in Python 3 for CodeEval.com by Steven A. Dunn
 
 import sys
 
 for line in open(sys.argv[1], 'r'):
-  line = map(int, line.rstrip('\n').split(' '))
+  line = list(map(int, line.rstrip('\n').split(' ')))
   N = line[0]
   numbers = line[1:]
 
@@ -14,6 +14,6 @@ for line in open(sys.argv[1], 'r'):
   jj_sum = (N * (N - 1))/ 2
 
   if abs_diffs == jj_sum:
-    print "Jolly"
+    print ("Jolly")
   else:
-    print "Not jolly"
+    print ("Not jolly")
