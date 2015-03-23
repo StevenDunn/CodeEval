@@ -6,14 +6,16 @@ for line in open(sys.argv[1], 'r'):
   line = list(map(int, line.rstrip('\n').split(' ')))
   N = line[0]
   numbers = line[1:]
-
-  abs_diffs = 0
+  abs_diffs = []
   for i in range(0, N - 1):
-    abs_diffs += abs(numbers[i] - numbers[i + 1])
-
-  jj_sum = (N * (N - 1))/ 2
-
-  if abs_diffs == jj_sum:
-    print ("Jolly")
-  else:
+    abs_diffs.append(abs(numbers[i] - numbers[i + 1]))
+  abs_diffs.sort()
+  not_jolly = False
+  for i in range(0, N-2):
+    if abs_diffs[i] == 0 or abs_diffs[i+1] > abs_diffs[i] + 1:
+      not_jolly = True
+      break
+  if not_jolly:
     print ("Not jolly")
+  else:
+    print ("Jolly")
