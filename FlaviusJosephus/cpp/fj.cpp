@@ -26,6 +26,9 @@ int main(int argc, char* argv[])
       int commaPos = line.find(",");
       int N = atoi(line.substr(0, commaPos).c_str());
       int M = atoi(line.substr(commaPos + 1).c_str());
+
+      cout << N << " " << M << endl;
+
       vector<int> flaviusSeq = flavius(N, M);
       for (int i = 0; i < flaviusSeq.size(); ++i)
         cout << flaviusSeq[i] << " ";
@@ -39,11 +42,11 @@ int main(int argc, char* argv[])
 vector<int> flavius(int N, int M)
 {
   vector<int> visited(N,0);
-  int elementsVisited = 0; 
+  int elementsVisited = 0;
   vector<int> results;
   int stepCount = 0;
 
-  for (int i = 0; i <= N; ++i) 
+  for (int i = 0; i <= N; ++i)
   {
     if (i == N)
     {
