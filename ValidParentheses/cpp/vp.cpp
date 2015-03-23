@@ -59,6 +59,6 @@ string compare(char c, stack<char>& parenStack)
     parenStack.pop();
     if (c != paren)
       return "False";
-  }
+  }z
   return "True";
 }
