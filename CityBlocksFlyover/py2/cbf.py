@@ -12,8 +12,6 @@ for line in f:
     xs = zip(x, x[1:])
     ys = zip(y, y[1:])
 
-    print xs
-
     m = y[-1]/float(x[-1])
 
     total = 0
