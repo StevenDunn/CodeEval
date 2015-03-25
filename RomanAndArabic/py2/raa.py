@@ -49,6 +49,7 @@ def calculate(digits, pairs):
 f = open(sys.argv[1], 'r')
 for line in f:
     line = line.rstrip()
+    print line
     pairs = []
     digits = []
     for i in range(0,len(line), 2):
