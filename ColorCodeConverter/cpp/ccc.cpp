@@ -192,7 +192,6 @@ int convert(string line)
 void hex2rgb(string line)
 {
     line = line.substr(1);
-    int r, g, b;
     rgb[0] = convert(line.substr(0, 2));
     rgb[1] = convert(line.substr(2, 2));
     rgb[2] = convert(line.substr(4, 2));
