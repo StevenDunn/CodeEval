@@ -14,7 +14,6 @@ File.open(ARGV[0], 'r') do |file|
         length = (length.to_i - 6) # 6cm spacing on either side
         spacing = spacing.to_i
         bats.map!{|x| x.to_i}.sort!
-
         total_new_bats = 0
         6.upto(length) do |spot|
             if !too_close(spot, bats, spacing)
