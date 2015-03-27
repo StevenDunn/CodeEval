@@ -12,8 +12,6 @@ using std::ifstream;
 using std::string;
 using std::vector;
 
-vector<long> seq;
-
 long calculate(long);
 
 int main (int argc, char* const argv[])
@@ -22,8 +20,6 @@ int main (int argc, char* const argv[])
   string line;
   if (input_file)
   {
-    seq.push_back(0);
-    seq.push_back(1);
     while (getline(input_file, line))
     {
       long n = atol(line.c_str());
