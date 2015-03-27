@@ -12,59 +12,40 @@ using std::ifstream;
 using std::string;
 using std::vector;
 
-vector<int> seq;
+vector<long> seq;
 
-int getNumber(unsigned long);
-void expand(vector<int>);
-int update(int);
+long calculate(long);
 
-int main(int argc, char* argv[])
+int main (int argc, char* const argv[])
 {
-  ifstream inputFile(argv[1]);
+  ifstream input_file(argv[1]);
   string line;
-
-  if (inputFile)
+  if (input_file)
   {
     seq.push_back(0);
     seq.push_back(1);
-    while (getline(inputFile, line))
+    while (getline(input_file, line))
     {
-      //cout << line << endl;
-      cout << getNumber(atol(line.c_str())) << endl;
+      long n = atol(line.c_str());
+      long x = calculate(n);
+      int offset = 0;
+      while (n > 0)
+      {
+        n -= x;
+        offset++;
+        x = calculate(n);
+      }
+      cout <<  offset % 3 << endl;
     }
-    inputFile.close();
+    input_file.close();
   }
   return 0;
 }
 
-int getNumber(unsigned long n)
+long calculate(long n)
 {
-  cout << n << endl;
-  if (n < seq.size())
-    return seq[n];
-
-  unsigned long chunk = seq.size();
-  while (n > chunk)
-  {
-    chunk *= 2;
-    expand(seq);
-  }
-  return seq[n];
-}
-
-void expand(vector<int> sequence)
-{
-  unsigned long seqLen = sequence.size();
-  for(unsigned long i = 0; i < seqLen; ++i)
-    seq.push_back(update(seq[i]));
-}
-
-int update(int n)
-{
-  if (n == 0 || n == 1)
-    return ++n;
-  if (n == 2)
-    return 0;
-  else
-    return -1;
+  long x = 2;
+  while (x <= n)
+    x *= 2;
+  return x/2;
 }
