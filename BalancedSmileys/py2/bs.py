@@ -10,7 +10,6 @@ def is_balanced(line):
 
     min_val = 0
     max_val = 0
-    left_paren_found = 0
     for i in range(0, len(line)):
         c = line[i]
         if c == '(':
