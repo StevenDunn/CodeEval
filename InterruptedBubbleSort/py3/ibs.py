@@ -19,6 +19,9 @@ def bubble_sort(nums, iterations):
 for line in open(sys.argv[1], 'r'):
     nums, iterations = line.rstrip().split("|")
     nums = list(map(int, list(nums.rstrip().split(" "))))
-    iterations = int(iterations)
-    nums = list(map(str, bubble_sort(nums, iterations)))
-    print (" ".join(nums))
+    if (all(nums[i] <= nums[i+1] for i in range(len(nums)-1))):
+        print (" ".join(list(map(str, nums))))
+    else:
+        iterations = int(iterations)
+        nums = list(map(str, bubble_sort(nums, iterations)))
+        print (" ".join(nums))
