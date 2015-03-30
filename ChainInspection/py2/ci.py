@@ -7,7 +7,7 @@ def is_chain_valid(chain):
   chain['BEGIN'][1] = True
 
   while element != 'END':
-    if chain[element][1] == True: 
+    if chain[element][1] == True:
       return False
     chain[element][1] = True
     element = chain[element][0]
@@ -25,6 +25,6 @@ for line in open(sys.argv[1], 'r'):
     a, b = entry.split('-')
     chain[a] = [b, False]
 
-  result = is_chain_valid(chain)  
+  result = is_chain_valid(chain)
   if result: print "GOOD"
   else: print "BAD"
