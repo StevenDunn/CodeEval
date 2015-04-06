@@ -2,15 +2,6 @@
 
 import sys
 
-def get_last_sentence(line):
-    penultimate_period = line.rfind('. ')
-    if penultimate_period >= 0:
-        last_period = line.rfind('.')
-        last_sentence = line[penultimate_period+1:last_period+1]
-        return last_sentence
-    else:
-        return False
-
 def get_longest_substring(line):
     words = line.split(" ")
     line_length = 0
@@ -35,6 +26,7 @@ def split_lines(line):
 def combine_lines(lines):
     formatted_line = ""
     for line in lines:
+        #print line
         words = line.split(" ")
         total_length = 0
         for word in words:
@@ -61,13 +53,7 @@ f = open(sys.argv[1], 'r')
 for line in f:
     line = line.rstrip()
     if len(line) > 80:
-        last_sentence = get_last_sentence(line)
-        if last_sentence:
-            line = line.replace(last_sentence, "")
-            line = format(line) + last_sentence
-            print line
-        else:
-            print format(line),
+        print format(line),
     else:
         print line
 
