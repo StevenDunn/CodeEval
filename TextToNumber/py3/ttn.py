@@ -135,5 +135,5 @@ def text_to_number (words):
 
 f = open(sys.argv[1], 'r')
 for line in f:
-    print text_to_number(line.rstrip().split(" "))
+    print (text_to_number(line.rstrip().split(" ")))
 f.close()
