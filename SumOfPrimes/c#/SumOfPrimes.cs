@@ -1,3 +1,5 @@
+// sum of primes soln in c# for code eval by steven a dunn
+
 using System;
 
 class SumOfPrimes {

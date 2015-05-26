@@ -56,9 +56,9 @@ print
 matrix = create_distance_matrix(locations)
 
 print matrix
-
 print
 
 mst = prim_mst(matrix)
 
 print mst
+

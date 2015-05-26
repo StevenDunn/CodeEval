@@ -39,7 +39,6 @@ def parse_message(header, message):
 			break
 		for idx in range(0, len(message), length):
 			word = message[idx:idx+length]
-			#print word
 			if word == terminator:
 				message = message[idx+length:]
 				break

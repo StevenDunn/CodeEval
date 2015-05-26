@@ -2,7 +2,7 @@
 
 import sys, decimal
 
-FIVE_PLACES = decimal.Decimal(10) ** -5
+FIVE_PLACES = decimal.Decimal(10) ** -6
 
 def find_paren_expr(i, line):
     paren_count = 1
@@ -76,7 +76,8 @@ def compute(calc_stack):
             updated_sublist.append(result)
             calc_stack[op_idx-1:op_idx+2] = updated_sublist
 
-        return calc_stack[0].quantize(FIVE_PLACES)
+        #return calc_stack[0].quantize(FIVE_PLACES)
+        return calc_stack[0].quantize(decimal.Decimal('0.000001'), rounding="ROUND_DOWN")
 
 def evaluate(line):
 
@@ -104,7 +105,7 @@ def evaluate(line):
     return compute(calc_stack)
 
 def format(number):
-    num_as_str = str(number)
+    num_as_str = '{0:.5f}'.format(round(float(number), 5))
     zero_idx = -1
     for i in range(len(num_as_str)-1, 0, -1):
         if num_as_str[i] == "0":
