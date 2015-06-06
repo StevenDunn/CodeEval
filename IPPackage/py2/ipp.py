@@ -46,15 +46,19 @@ for line in open(sys.argv[1], 'r'):
 
     result = " ".join(octets[0:10]) + " "
 
+    # zero out checksum bytes for calculation
+    octets[10:12] = ["00", "00"]
     octets[12:16] = source_ip.split()
     octets[16:20] = destination_ip.split()
 
     checksum_data = map(lambda x: int(x, 16), octets)
     checksum_data = struct.pack("%dB" % len(checksum_data), *checksum_data)
-    checksum = hex(get_checksum(checksum_data))[2:]
-    checksum = checksum[0:2] + " " + checksum[2:]
-    result += checksum + " "
+    #checksum = hex(get_checksum(checksum_data))[2:]
 
+    checksum = bin(get_checksum(checksum_data))[2:]
+    checksum = hex(int(checksum[8:], 2))[2:] + " " + hex(int(checksum[0:8], 2))[2:]
+
+    result += checksum + " "
     result += source_ip + " " + destination_ip
 
     print result
