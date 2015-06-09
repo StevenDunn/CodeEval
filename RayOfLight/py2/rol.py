@@ -71,28 +71,28 @@ def does_reflect(x, y):
         return False
     return True
 
-def calculate_reflection(x, y, direction):
+def calculate_reflection(x, y, direction, depth):
     if does_reflect(x, y):
         if direction == 45:
             if x == 0:
-                calculate_update(x+1, y, 315)
+                calculate_update(x+1, y, 315, depth - 1)
             else:
-                calculate_update(x, y-1, 135)
+                calculate_update(x, y-1, 135, depth - 1)
         elif direction == 225:
             if x == 9:
-                calculate_update(x-1, y, 135)
+                calculate_update(x-1, y, 135, depth - 1)
             else:
-                calculate_update(x, y+1, 315)
+                calculate_update(x, y+1, 315, depth - 1)
         elif direction == 135:
             if x == 0:
-                calculate_update(x+1, y, 225)
+                calculate_update(x+1, y, 225, depth - 1)
             else:
-                calculate_update(x, y+1, 45)
+                calculate_update(x, y+1, 45, depth - 1)
         elif direction == 315:
             if x == 9:
-                calculate_update(x-1, y, 45)
+                calculate_update(x-1, y, 45, depth - 1)
             else:
-                calculate_update(x, y-1, 225)
+                calculate_update(x, y-1, 225, depth - 1)
 
 def is_column(x, y):
     if room[x][y] == "o":
@@ -105,14 +105,14 @@ def is_splitter(x, y):
         return True
     return False
 
-def split(x, y):
+def split(x, y, depth):
     for splitter in splitters:
         if splitter[0] == x and splitter[1] == y and splitter[2] == False:
             splitter[2] = True
-            calculate_update(x+1, y-1, 225)
-            calculate_update(x+1, y+1, 315)
-            calculate_update(x-1, y-1, 135)
-            calculate_update(x-1, y+1, 45)
+            calculate_update(x+1, y-1, 225, depth)
+            calculate_update(x+1, y+1, 315, depth)
+            calculate_update(x-1, y-1, 135, depth)
+            calculate_update(x-1, y+1, 45, depth)
 
 def mark_ray(x, y, direction):
     if room[x][y] == "X":
@@ -138,28 +138,30 @@ def visited(x, y, direction):
             return True
     return False
 
-def calculate_update(x, y, direction):
-    #print x, y, direction
+def calculate_update(x, y, direction, depth):
+    if depth < 0:
+        return
+    #print x, y, direction, depth
     if in_range(x) and in_range(y) and not visited(x, y, direction):
         if is_wall(x, y):
-            calculate_reflection(x, y, direction)
+            calculate_reflection(x, y, direction, depth)
         else:
             if not is_column(x, y):
                 if is_splitter(x, y):
-                    split(x, y)
+                    split(x, y, depth)
                 else:
                     mark_ray(x, y, direction)
-                    update_ray(x, y, direction)
+                    update_ray(x, y, direction, depth)
 
-def update_ray(x,y, direction):
+def update_ray(x,y, direction, depth):
     if direction == 45:
-        calculate_update(x-1, y+1, direction)
+        calculate_update(x-1, y+1, direction, depth - 1)
     elif direction == 225:
-        calculate_update(x+1, y-1, direction)
+        calculate_update(x+1, y-1, direction, depth - 1)
     elif direction == 135:
-        calculate_update(x-1, y-1, direction)
+        calculate_update(x-1, y-1, direction, depth - 1)
     elif direction == 315:
-        calculate_update(x+1, y+1, direction)
+        calculate_update(x+1, y+1, direction, depth - 1)
     else:
         print "error: invalid direction!"
 
@@ -172,10 +174,13 @@ def serialize():
 f = open(sys.argv[1], 'r')
 
 for line in f:
-    #print line
     room = deserialize(line)
+
     x,y = find_start()
     initial_direction = find_direction(x,y)
-    update_ray(x, y, initial_direction)
+    depth = 20
+
+    update_ray(x, y, initial_direction, depth)
+
     print serialize()
 f.close()
