@@ -3,84 +3,48 @@
 import sys, re
 
 def parse(line):
-    line = line.strip().split(";")
-    return line[0], line[1].split(",")
+    line = line.rstrip().split(';')
+    return line[0], line[1].split(',')
 
-def create_list(text):
-    string = []
-    for c in text:
-        string.append((c, False))
-    return string
-
-def not_visited(sub, index, string):
-    for element in string[index:index+len(sub)]:
-        if element[1] == True:
+def not_visited(visited, src, occurence):
+    for i in range(0, len(src)):
+        if occurence + i < len(visited) and visited[occurence + i] == True:
             return False
     return True
 
-def apply_subs(string, subs, idx):
-    first_vals = [i[0] for i in string]
-    text = "".join(first_vals)
-    search = "(?=" + subs[idx] + ")"
-    indices = [i.start() for i in re.finditer(search, text)]
-    for index in indices:
-        if not_visited(subs[idx], index, string):
-            substring = [(i, True) for i in subs[idx+1]]
-            string = string[0:index] + substring + string[index+len(subs[idx]):]
-            break
-    return string
+def update_string(text, visited, occurence, src, rpl):
+    text = text[0:occurence] + rpl + text[occurence + len(src):]
+    visited = visited[0:occurence] + ([True] * len(rpl)) + visited[occurence + len(src):] 
+    return text, visited
+
+def replace(text, visited, src, rpl):
+    occurences = [m.start() for m in re.finditer('(?=' + src + ')', text)]
+    for occurence in occurences:
+        if not_visited(visited, src, occurence):
+            return update_string(text, visited, occurence, src, rpl)
+    return text, visited
+
+def format(visited):
+    result = ""
+    for i in visited:
+        if i == False:
+            result += "F"
+        else:
+            result += "T"
+    return result
 
 f = open(sys.argv[1], 'r')
 for line in f:
-    print line
     text, subs = parse(line)
-    string = create_list(text)
-
-    idx = 0
-    while idx < len(subs):
-        print "".join([i[0] for i in string])
-        print ",".join([str(i[1]) for i in string])
-        string = apply_subs(string, subs, idx)
-        idx = idx + 2
-    print "".join([i[0] for i in string])
-f.close()
-
-"""
-
-import sys
-import re
-
-def not_visited(substring, index, visited):
-    visited_range = visited[index:index+len(substring)]
-    for char in visited_range:
-        if char == True:
-            return False
-    return True
-
-f = open(sys.argv[1], 'r')
-
-for line in f:
-    print line
-    line = line.strip().split(";")
-    text = line[0]
     visited = [False] * len(text)
-    subs = line[1].split(",")
-
-    idx = 0
-    while idx < len(subs):
-        # lookahead regex to detect substrings
-        # see: http://stackoverflow.com/questions/4664850/find-all-occurrences-of-a-substring-in-python
-        search = "(?=" + subs[idx] + ")"
-        indices = [i.start() for i in re.finditer(search, text)]
-        for index in indices:
-            if not_visited(subs[idx], index, visited):
-                text =  text[0:index] + subs[idx+1] + text[index+len(subs[idx]):]
-                for i in range(index, index + len(subs[idx])):
-                    visited[i] = True
-                break
-        idx = idx + 2
+    #print text
+    #print format(visited)
+    for i in range(0, len(subs) - 1, 2):
+        src, rpl = subs[i], subs[i+1]
+        text, visited = replace(text, visited, src, rpl)
+        #print src, rpl
+        #print text
+        #print format(visited)
     print text
-
+    #print
 f.close()
-
-"""
