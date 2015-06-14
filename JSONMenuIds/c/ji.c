@@ -32,22 +32,21 @@ int main (int argc, char* const argv[])
                 Array labelTokens;
                 init(&labelTokens, 1);
                 int sum = 0;
-                printf("id tokens used: %zu id tokens: %s\n", idTokens.used, idTokens.array[0]);
-                for(int i = 0; i < idTokens.used; ++i)
+                int i = 0;
+                for(i = 0; i < idTokens.used; ++i)
                 {
                     labelTokens = split(idTokens.array[i], "label");
                     if (labelTokens.used > 1 &&
                         labelTokens.array[0][0] == 'd' &&
                         labelTokens.array[1][0] == 'a')
                     {
-                        printf("%s", labelTokens.array[0]);
                         int idValue = getIdValue(labelTokens.array[0]);
                         sum += idValue;
                     }
                 }
                 printf("%d\n", sum);
 
-                for (int i = 0; i < idTokens.used; ++i)
+                for (i = 0; i < idTokens.used; ++i)
                     free(idTokens.array[i]);
                 free(idTokens.array);
             }
@@ -81,11 +80,8 @@ Array split(char* line, char* delimiter)
     size_t prev, pos;
     prev = 0;
     pos = find(line, delimiter, prev);
-    printf("pos: %zu\n", pos);
     while (pos !=  -1)
     {
-
-        printf("pos: %zu prev: %zu\n", pos, prev);
         if (pos > prev)
            insert(&tokens, substr(line, prev, pos - prev));
         prev = pos + 1;
@@ -99,14 +95,23 @@ Array split(char* line, char* delimiter)
 
 size_t find(char* line, char* delimiter, size_t prev)
 {
-    printf("line: %s\n", line);
-    puts(delimiter);
-    line += prev;
-    printf("line 2: %s\n", line);
-    char* token = strtok(line, delimiter);
-    puts(token);
-    if (token != NULL)
-        return strlen(token);
+    char* loc = &line[prev];
+    int delim_len = strlen(delimiter);
+    int loc_idx = 0;
+    while (*loc && *(loc+delim_len)) {
+        int i = 0;
+        int match = 1;
+        for (i = 0; i < delim_len; i++) {
+            if (loc[i] != delimiter[i]) {
+                match = 0;
+                break;
+            }
+        }
+        if (match)
+            return loc_idx + prev;
+        ++loc;
+        ++loc_idx;
+    }
     return -1;
 }
 
@@ -114,20 +119,18 @@ char* substr(char* line, size_t start, size_t end)
 {
     if (end == -1)
         end = strlen(line);
-    char* str = (char*)malloc((end - start) * sizeof(char));
-    memcpy(str, line+start, end-start);
+    char* str = (char*)malloc(end * sizeof(char));
+    memcpy(str, line+start, end);
     return str;
 }
 
 int getIdValue(char* word)
 {
     char chars[] = "{}abcdefghijklmnopqrstuvwxyz:\", ";
-    puts(word);
-    for(int i = 0; i < strlen(chars); ++i)
+    int i = 0;
+    for(i = 0; i < strlen(chars); ++i)
         erase(word, chars[i]);
-    puts(word);
     int result = atoi(word);
-    puts(word);
     return result;
 }
 
