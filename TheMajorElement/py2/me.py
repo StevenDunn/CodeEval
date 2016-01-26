@@ -2,7 +2,8 @@
 
 import sys
 
-for line in open(sys.argv[1], 'r'):
+f = open(sys.argv[1], 'r')
+for line in f:
   entries = map(int, line.rstrip('\n').split(','))
   L = len(entries)
   counts = {}
@@ -23,3 +24,4 @@ for line in open(sys.argv[1], 'r'):
     print result
   else:
     print "None"
+f.close()
