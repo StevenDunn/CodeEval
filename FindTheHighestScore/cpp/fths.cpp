@@ -29,8 +29,12 @@ int main (int argc, char* const argv[])
 	return 0;
 }
 
-vector<int> tokenize(string input)
+vector<int> tokenize(string line)
 {
-	vector<int> dummy;
-	return dummy;
+    vector<int> tokens;
+    istringstream iss(line);
+    string token;
+    while (getline(iss, token, ' '))
+        tokens.push_back(atoi(token.c_str()));
+    return tokens;
 }
