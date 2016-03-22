@@ -30,14 +30,14 @@ def compare_hands(hands, trump):
 
 f = open(sys.argv[1], 'r')
 for line in f:
-	hands, trump = line.strip().split(" | ")
+	hands, trump = line.strip(). split(" | ")
 	hands = hands.split()
 	comp_hands = hands[:]
 	comp = compare_hands(comp_hands, trump)
 	if comp < 0:
-		print hands[0]
+		print (hands[0])
 	elif comp > 0:
-		print hands[1]
+		print (hands[1])
 	else:
-		print hands[0] + " " + hands[1]
+		print (hands[0] + " " + hands[1])
 f.close()
