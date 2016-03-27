@@ -58,7 +58,7 @@ string LCS(string X, string Y)
         C[i][j] = max(C[i-1][j], C[i][j-1]);
     }
   }
-
+  
   return backtrack(C, X, Y, m, n);
 }
 
