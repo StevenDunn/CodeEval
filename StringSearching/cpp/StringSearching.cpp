@@ -20,18 +20,18 @@ int main(int argc, char* argv[])
     
   if(inputFile)
   {
-	  while(getline(inputFile, line))
-	  {
-		  int commaPos = line.find(",");
-		  string src = line.substr(0, commaPos);
-		  string query = line.substr(commaPos + 1);
+    while(getline(inputFile, line))
+    {
+      int commaPos = line.find(",");
+      string src = line.substr(0, commaPos);
+      string query = line.substr(commaPos + 1);
 
       formatSourceString(src);
       formatQueryString(query);
 
-		  cout << search(src, query) << endl;
-	  }
-	  inputFile.close();      
+      cout << search(src, query) << endl;
+    }
+    inputFile.close();      
   }
   return 0;
 }
@@ -76,5 +76,5 @@ string search(string src, string query)
     if (queryIdx == query.size())
       return "true";
   }  
-	return "false";
+  return "false";
 }
