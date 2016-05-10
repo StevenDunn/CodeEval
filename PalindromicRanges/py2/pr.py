@@ -30,23 +30,3 @@ for line in f:
 	x, y = map(int, line.strip().split())
 	print get_num_ranges(x, y)
 f.close()
-
-
-"""
-
-bool isPalindrome(int x)
-{
-  string word;
-  ostringstream oss;
-  oss << x;
-  word = oss.str();
-  
-  string reverseWord = word;
-  reverse(reverseWord.begin(), reverseWord.end());
-
-  if (word == reverseWord)
-    return true;
-
-  return false;
-}
-"""
