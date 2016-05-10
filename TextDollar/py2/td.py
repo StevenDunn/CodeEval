@@ -135,7 +135,7 @@ f = open(sys.argv[1], 'r')
 
 for line in f:
     number = long(line)
-
+    print line
     text = ""
     if number < 100:
         text += get_tens_word(number)
@@ -154,7 +154,10 @@ for line in f:
     else:
         text += get_hundred_millions_word(number)
 
-    text += "Dollars"
+    if text == "One":
+        text += "Dollar"
+    else:
+        text += "Dollars"
     print text
 
 f.close()
