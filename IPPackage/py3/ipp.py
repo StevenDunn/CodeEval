@@ -1,4 +1,4 @@
-# ip package soln in python2 for codeeval by steven dunn
+# ip package soln in python3 for codeeval by steven dunn
 
 import sys, struct
 
@@ -10,7 +10,7 @@ def carry_around_add(a, b):
 def get_checksum(msg):
     s = 0
     for i in range(0, len(msg), 2):
-        w = ord(msg[i]) + (ord(msg[i+1]) << 8)
+        w = msg[i] + (msg[i+1] << 8)
         s = carry_around_add(s, w)
     return ~s & 0xffff
 
@@ -51,7 +51,7 @@ for line in open(sys.argv[1], 'r'):
     octets[12:16] = source_ip.split()
     octets[16:20] = destination_ip.split()
 
-    checksum_data = map(lambda x: int(x, 16), octets)
+    checksum_data = list(map(lambda x: int(x, 16), octets))
     checksum_data = struct.pack("%dB" % len(checksum_data), *checksum_data)
 
     checksum = bin(get_checksum(checksum_data))[2:]
@@ -60,4 +60,4 @@ for line in open(sys.argv[1], 'r'):
     result += checksum + " "
     result += source_ip + " " + destination_ip
 
-    print result
+    print (result)
