@@ -47,7 +47,6 @@ string printLRS(string line)
 
 string findLRS(string line)
 {
-
   int len = line.size();
   vector<string> suffixes(len);
   for (int i = 0; i < len; ++i)
