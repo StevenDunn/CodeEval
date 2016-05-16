@@ -32,7 +32,6 @@ int getCount(string line)
 {
   int count = 0;
   int val;
-  
   if (line.size() == 1 && line.at(0) != '0')
     return 1;
   if (line.size() == 2)

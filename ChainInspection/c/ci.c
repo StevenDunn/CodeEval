@@ -75,12 +75,6 @@ int main (int argc, char* const argv[])
                 puts("GOOD");
             else
                 puts("BAD");
-
-            //for (int i = 0; i < entries.used; ++i)
-            //    free(entries.array[i]);
-            //free(entries.array);
-            //free(chain.data);
-
         }
         fclose(fp);
     }
