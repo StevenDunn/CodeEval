@@ -25,18 +25,47 @@ def get_lowest(leaf_nodes, internal_nodes):
 	elif internal_nodes:
 		return internal_nodes.pop(0)
 
+def get_encoding(c, root, tree):
+	encoding = ""
+	node = root
+	while True:
+		if node in tree:
+			leaf_1 = tree[node][0]
+			leaf_2 = tree[node][1]
+			if c in leaf_1:
+				encoding += "0"
+				node = leaf_1
+			elif c in leaf_2:
+				encoding += "1"
+				node = leaf_2
+		else:
+			break
+	return encoding
+
+def print_encodings(line, root, tree):
+	line = sorted(set(line.strip()))
+	encodings = {}
+	for c in line:
+		encodings[c] = get_encoding(c, root, tree)
+	keys = sorted(encodings)
+	for i in range(len(keys)):
+		keys[i] = keys[i] + ": " + str(encodings[keys[i]])
+	print "; ".join(keys) + ";"
+
 f = open(sys.argv[1], 'r')
 for line in f:
 	leaf_nodes = parse_input(line)
 	internal_nodes = []
+	tree = {}
 	while len(leaf_nodes) + len(internal_nodes) > 1:
 		node1 = get_lowest(leaf_nodes, internal_nodes)
 		node2 = get_lowest(leaf_nodes, internal_nodes)
-		internal_nodes.append((node1[0]+node2[0], node1[1]+node2[1], node1, node2))
-	tree = []
+		internal_nodes.append((node1[0]+node2[0], node1[1]+node2[1]))
+		tree[node1[0]+node2[0]] = [node1[0], node2[0]]
+	root = []
 	if leaf_nodes:
-		tree = leaf_nodes
+		root = leaf_nodes[0][0]
 	else:
-		tree = internal_nodes
-	print tree
+		root = internal_nodes[0][0]
+	print_encodings(line, root, tree)
 f.close()
