@@ -31,6 +31,7 @@ for line in f:
 	result = []
 	while idx < len(line):
 		cur = line[idx]
+		print cells, ptr, idx, cur
 		if cur == ".":
 			result.append(chr(cells[ptr]))
 		elif cur == "+":
