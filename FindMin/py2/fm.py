@@ -5,8 +5,8 @@ import sys, collections, heapq
 f = open(sys.argv[1], 'r')
 for line in f:
     line = line.rstrip().split(",")
-    numbers = [int(x) for x in line]
-    n, k, a, b, c, r = numbers
+    nums = [int(x) for x in line]
+    n, k, a, b, c, r = nums
 
     m = [a]
     for i in range(1, k):

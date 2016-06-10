@@ -37,14 +37,11 @@ f = open(sys.argv[1], 'r')
 for line in f:
     text, subs = parse(line)
     visited = [False] * len(text)
-    #print text
-    #print format(visited)
     for i in range(0, len(subs) - 1, 2):
         src, rpl = subs[i], subs[i+1]
-        text, visited = replace(text, visited, src, rpl)
-        #print src, rpl
-        #print text
-        #print format(visited)
+        updated_text, visited = replace(text, visited, src, rpl)
+        while text != updated_text:
+            text = updated_text
+            updated_text, visited = replace(text, visited, src, rpl)
     print text
-    #print
 f.close()

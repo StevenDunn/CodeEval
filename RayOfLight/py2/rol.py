@@ -127,7 +127,6 @@ def mark_ray(x, y, direction):
             room[x][y] = "X"
         elif room[x][y] != "\\":
             room[x][y] = "\\"
-    #print "mark ray at: ", x, y, direction, "as: ", room[x][y]
 
 def visited(x, y, direction):
     if direction == 45 or direction == 225:
@@ -139,12 +138,12 @@ def visited(x, y, direction):
     return False
 
 def calculate_update(x, y, direction, depth):
-    if depth < 0:
+    if depth <= 0:
         return
     #print x, y, direction, depth
     if in_range(x) and in_range(y) and not visited(x, y, direction):
         if is_wall(x, y):
-            calculate_reflection(x, y, direction, depth)
+            calculate_reflection(x, y, direction, depth+1)
         else:
             if not is_column(x, y):
                 if is_splitter(x, y):
@@ -172,15 +171,14 @@ def serialize():
     return result
 
 f = open(sys.argv[1], 'r')
-
 for line in f:
+    print line
     room = deserialize(line)
-
+    #print room
     x,y = find_start()
     initial_direction = find_direction(x,y)
     depth = 20
-
+    #print x, y, initial_direction, depth
     update_ray(x, y, initial_direction, depth)
-
     print serialize()
 f.close()
