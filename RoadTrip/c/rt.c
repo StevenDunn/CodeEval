@@ -24,12 +24,21 @@ int main(int argc, char* const argv[])
         while (fgets(line, sizeof(line), fp))
         {
             for(int i = 0; i < sizeof(line); ++i)
+            {
+                if (line[i] == '\0')
+                {
+                    break;
+                }
                 if (line[i] == '\n')
+                {
                     line[i] = '\0';
+                    break;
+                }
+            }
 
             // array to hold {location, distance} pairs
             Array tok_arr;
-            init(&tok_arr, 1);
+            init(&tok_arr, 600);
             char* token = strtok(line, ";");
             while (token != NULL)
             {
