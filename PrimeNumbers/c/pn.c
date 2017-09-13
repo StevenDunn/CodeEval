@@ -12,7 +12,7 @@ int main (int argc, char* const argv[])
     FILE *fp = fopen(argv[1], "r");
     if (fp != NULL)
     {
-        char line[512];
+        char line[256];
         while (fgets(line, sizeof(line), fp))
         {
             unsigned long n = atol(line);
