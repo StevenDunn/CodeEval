@@ -24,7 +24,7 @@ int main (int argc, char* const argv[])
         while (fgets(line, sizeof(line), fp))
         {
             Array nums;
-            init(&nums, 1);
+            init(&nums, 2);
 
             char *token = strtok(line, " ");
             while (token != NULL)
